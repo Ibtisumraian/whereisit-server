@@ -26,7 +26,14 @@ async function run() {
   try {
       await client.connect();
 
-    
+    const itemsCollection = client.db('whereIsItDB').collection('items')
+      
+
+    app.post('/items', async (req, res) => {
+      const item = req.body
+      const result = await itemsCollection.insertOne(item)
+      res.send(result)
+    })
     
     
     await client.db("admin").command({ ping: 1 });
