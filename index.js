@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-      await client.connect();
+      // await client.connect();
 
     const itemsCollection = client.db('whereIsItDB').collection('items')
       
@@ -39,7 +39,7 @@ async function run() {
     app.get('/items', async (req, res) => {
       const { title } = req.query;
       const query = {};
-      
+
       if (title) {
         query.title = { $regex: title, $options: 'i' };
       }
@@ -51,6 +51,17 @@ async function run() {
         res.status(500).send({ message: 'Failed to fetch items', error });
       }
     })
+
+
+    app.get('/items/recent', async (req, res) => {
+      try {
+        const result = await itemsCollection.find().sort({ recent_date: -1  }).limit(6).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: 'Failed to fetch recent items', error });
+      }
+    });
+    
     
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
