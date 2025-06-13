@@ -37,8 +37,19 @@ async function run() {
     
 
     app.get('/items', async (req, res) => {
-      const result = await itemsCollection.find().toArray()
-      res.send(result)
+      const { title } = req.query;
+      const query = {};
+      
+      if (title) {
+        query.title = { $regex: title, $options: 'i' };
+      }
+
+      try {
+        const result = await itemsCollection.find(query).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: 'Failed to fetch items', error });
+      }
     })
     
     await client.db("admin").command({ ping: 1 });
