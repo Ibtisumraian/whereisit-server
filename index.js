@@ -11,7 +11,7 @@ app.use(express.json())
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.eqhhjdx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
@@ -51,6 +51,16 @@ async function run() {
         res.status(500).send({ message: 'Failed to fetch items', error });
       }
     })
+
+
+    app.get('/item/:id', async(req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await itemsCollection.findOne(query)
+      res.send(result)
+    })
+    
+    
 
 
     app.get('/items/recent', async (req, res) => {
