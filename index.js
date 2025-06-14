@@ -27,6 +27,7 @@ async function run() {
       // await client.connect();
 
     const itemsCollection = client.db('whereIsItDB').collection('items')
+    const recoveredCollection = client.db('whereIsItDB').collection('recovered')
       
 
     app.post('/items', async (req, res) => {
@@ -53,7 +54,7 @@ async function run() {
     })
 
 
-    app.get('/item/:id', async(req, res) => {
+    app.get('/items/:id', async(req, res) => {
       const id = req.params.id
       const query = { _id: new ObjectId(id) }
       const result = await itemsCollection.findOne(query)
@@ -63,7 +64,7 @@ async function run() {
     
 
 
-    app.get('/items/recent', async (req, res) => {
+    app.get('/recent', async (req, res) => {
       try {
         const result = await itemsCollection.find().sort({ recent_date: -1  }).limit(6).toArray();
         res.send(result);
@@ -71,9 +72,16 @@ async function run() {
         res.status(500).send({ message: 'Failed to fetch recent items', error });
       }
     });
+
+
+    app.post('/recovered', async (req, res) => {
+      const item = req.body
+      const result = await recoveredCollection.insertOne(item)
+      res.send(result)
+    })
     
     
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // await client.close();
