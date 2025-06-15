@@ -74,6 +74,19 @@ async function run() {
     });
 
 
+    app.patch('/items', async (req, res) => {
+      const { id } = req.body
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+      $set: {
+                recovered: true
+            }
+      }
+      const result = await itemsCollection.updateOne(filter, updatedDoc)
+      res.send(result)
+    })
+
+
     app.post('/recovered', async (req, res) => {
       const item = req.body
       const result = await recoveredCollection.insertOne(item)
@@ -82,7 +95,7 @@ async function run() {
     
     
     // await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // await client.close();
   }
