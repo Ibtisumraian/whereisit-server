@@ -92,6 +92,15 @@ async function run() {
       const result = await recoveredCollection.insertOne(item)
       res.send(result)
     })
+
+
+
+    app.get('/recovered/:email', async (req, res) => {
+      const email = req.params.email
+      const query = { recovered_mail: email };
+      const result = await recoveredCollection.find(query).toArray();
+      res.send(result)
+    })
     
     
     // await client.db("admin").command({ ping: 1 });
