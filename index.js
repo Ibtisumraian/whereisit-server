@@ -56,7 +56,7 @@ async function run() {
 
     app.post('/jwt', async (req, res) => {
       const userData = req.body
-      const token = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, { expiresIn: '2h' })
+      const token = jwt.sign(userData, process.env.JWT_ACCESS_SECRET, { expiresIn: '30d' })
       res.cookie('token', token, {
         httpOnly: true,
         secure: true,
@@ -99,6 +99,13 @@ async function run() {
     })
     
     
+    app.get('/user/:email', async (req, res) => {
+      const email = req.params.email
+      const query = { email: email };
+      const result = await itemsCollection.find(query).toArray();
+      res.send(result)
+    })
+
 
 
     app.get('/recent', verifyToken, async (req, res) => {
