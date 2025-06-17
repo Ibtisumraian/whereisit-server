@@ -135,7 +135,7 @@ async function run() {
     });
 
 
-    app.patch('/items', async (req, res) => {
+    app.patch('/items', verifyToken, async (req, res) => {
       const { id } = req.body
       const filter = { _id: new ObjectId(id) }
       const updatedDoc = {
@@ -147,6 +147,15 @@ async function run() {
       res.send(result)
     })
 
+
+    app.delete('/delete/:id', verifyToken, async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await itemsCollection.deleteOne(query)
+      res.send(result)
+    })
+    
+    
 
     app.post('/recovered', async (req, res) => {
       const item = req.body
