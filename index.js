@@ -99,13 +99,30 @@ async function run() {
     })
     
     
-    app.get('/user/:email', async (req, res) => {
+    app.get('/user/:email', verifyToken, async (req, res) => {
       const email = req.params.email
+      if (email !== req.decoded.email) {
+        return res.status(403).send({ message: "forbidden access" })
+      }
       const query = { email: email };
       const result = await itemsCollection.find(query).toArray();
       res.send(result)
     })
 
+
+    app.put('/update/:id', verifyToken, async (req, res) => {
+        const id = req.params.id
+        const filter = { _id: new ObjectId(id) }
+        const updatedCoffee = req.body
+        const options = { upsert: true }
+        const updatedDoc = {
+          $set: updatedCoffee
+        }
+        const result = await itemsCollection.updateOne(filter, updatedDoc, options)
+        res.send(result)
+      
+      
+      })
 
 
     app.get('/recent', verifyToken, async (req, res) => {
