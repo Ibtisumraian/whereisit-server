@@ -74,7 +74,7 @@ async function run() {
     })
     
 
-    app.get('/items', verifyToken, async (req, res) => {
+    app.get('/items', async (req, res) => {
       const { title } = req.query;
       const query = {};
       if (title) {
@@ -125,9 +125,30 @@ async function run() {
       })
 
 
-    app.get('/recent', verifyToken, async (req, res) => {
+    app.get('/descending', async (req, res) => {
       try {
-        const result = await itemsCollection.find().sort({ recent_date: -1  }).limit(6).toArray();
+        const result = await itemsCollection.find().sort({ recent_date: -1  }).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: 'Failed to fetch recent items', error });
+      }
+    });
+
+
+    app.get('/ascending', async (req, res) => {
+      try {
+        const result = await itemsCollection.find().sort({ recent_date: 1  }).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: 'Failed to fetch recent items', error });
+      }
+    });
+
+
+
+    app.get('/recent', async (req, res) => {
+      try {
+        const result = await itemsCollection.find().sort({ recent_date: -1  }).limit(8).toArray();
         res.send(result);
       } catch (error) {
         res.status(500).send({ message: 'Failed to fetch recent items', error });
