@@ -2,9 +2,9 @@
 
 This is the backend repository for the **WhereIsIt** full-stack Lost and Found web application. Built using **Node.js**, **Express.js**, and **MongoDB**, it provides a secure and efficient REST API to support the client-side app.
 
-🔗 **Live Server:** [https://lost-and-found-server-mu.vercel.app](https://lost-and-found-server-mu.vercel.app)  
-🌐 **Server Repo:** [GitHub - Server](https://github.com/Programming-Hero-Web-Course4/b11a11-server-side-Ibtisumraian)
-🧑‍💻 **Client Repo:** [GitHub - Client](https://github.com/Programming-Hero-Web-Course4/b11a11-client-side-Ibtisumraian)
+🔗 **Live Site:** [https://whereisit-app.web.app/](https://whereisit-app.web.app/)  
+💻 **Client Repo:** [GitHub - Client](https://github.com/Ibtisumraian/whereisit)
+📦 **Server Repo:** [GitHub - Server](https://github.com/Ibtisumraian/whereisit-server)  
 
 ---
 
